@@ -39,7 +39,8 @@ async function createUser(newUser) {
 
 async function removeUser(username, password) {
   const user = await fetchUser(username);
-  if (user.password === password) {
+  const matchPassword = await bcrypt.compare(password, user.password);
+  if (matchPassword) {
     const users = await fetchAllUsers();
     const index = users.findIndex((u) => u.username === username);
     users.splice(index, 1);
