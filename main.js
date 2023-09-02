@@ -116,7 +116,8 @@ app.post("/login", async (req, res) => {
     return;
   }
   // 비밀번호가 틀렸을 경우
-  if (password !== user.password) {
+  const matchPassword = await bcrypt.compare(password, user.password);
+  if (!matchPassword) {
     res.status(400).send("incorrect password");
     return;
   }
